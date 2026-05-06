@@ -1,3 +1,7 @@
+"""
+Module für die Store-Klasse.
+Verwaltet eine Kollektion von Produkten.
+"""
 import products
 
 
@@ -6,7 +10,8 @@ class Store:
     Repräsentiert einen Store mit einer Kollektion von Produkten.
     Verwendet Komposition - "has-a"-Beziehung mit der Product-Klasse.
     """
-    
+
+
     def __init__(self, product_list: list[products.Product]):
         """
         Konstruktor-Methode.
@@ -15,7 +20,8 @@ class Store:
             product_list: Eine Liste von Produkten im Store
         """
         self.products = product_list
-    
+
+
     def add_product(self, product: products.Product):
         """
         Fügt ein Produkt zum Store hinzu.
@@ -24,7 +30,8 @@ class Store:
             product: Das hinzuzufügende Produkt
         """
         self.products.append(product)
-    
+
+
     def remove_product(self, product: products.Product):
         """
         Entfernt ein Produkt aus dem Store.
@@ -34,7 +41,8 @@ class Store:
         """
         if product in self.products:
             self.products.remove(product)
-    
+
+
     def get_total_quantity(self) -> int:
         """
         Gibt zurück, wie viele Artikel insgesamt im Store vorhanden sind.
@@ -46,7 +54,8 @@ class Store:
         for product in self.products:
             total += product.get_quantity()
         return total
-    
+
+
     def get_all_products(self) -> list[products.Product]:
         """
         Gibt alle aktiven Produkte im Store zurück.
@@ -59,7 +68,8 @@ class Store:
             if product.is_active():
                 active_products.append(product)
         return active_products
-    
+
+
     def order(self, shopping_list: list[tuple[products.Product, int]]) -> float:
         """
         Kauft die Produkte aus einer Einkaufsliste.
@@ -75,30 +85,10 @@ class Store:
             ValueError: Wenn ein Produkt nicht im Store vorhanden ist
         """
         total_price = 0
-        
         for product, quantity in shopping_list:
             # Überprüfe, ob das Produkt im Store vorhanden ist
             if product not in self.products:
                 raise ValueError(f"Das Produkt '{product.name}' befindet sich nicht im Store.")
-            
             # Kaufe die Menge des Produkts und addiere den Preis
             total_price += product.buy(quantity)
-        
         return total_price
-
-
-def main():
-    """Test-Funktion für die Store-Klasse."""
-    product_list = [products.Product("MacBook Air M2", price=1450, quantity=100),
-                    products.Product("Bose QuietComfort Earbuds", price=250, quantity=500),
-                    products.Product("Google Pixel 7", price=500, quantity=250),
-                   ]
-
-    best_buy = Store(product_list)
-    products_in_store = best_buy.get_all_products()
-    print(best_buy.get_total_quantity())
-    print(best_buy.order([(products_in_store[0], 1), (products_in_store[1], 2)]))
-
-
-if __name__ == "__main__":
-    main()
